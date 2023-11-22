@@ -1,32 +1,43 @@
 package com.ada.banco.domain.model;
 
-import java.math.BigDecimal;
+import com.ada.banco.domain.model.enums.TipoContaEnum;
+import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+import java.util.Objects;
+
+@Entity
 public class Conta {
-    private Long id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id; // número da conta
+
+    @Column(nullable = false)
     private Long agencia;
+
+    @Column(nullable = false)
     private Long digito;
+
+    @Column(nullable = false)
     private BigDecimal saldo;
 
-    // Usuario / Titular
-    private String titular;
-    private String cpf;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "cliente_id", referencedColumnName = "id")
+    private Cliente titular;
 
-    public Conta(Long id, Long agencia, Long digito, BigDecimal saldo, String titular, String cpf) {
-        this.id = id;
-        this.agencia = agencia;
-        this.digito = digito;
-        this.saldo = saldo;
-        this.titular = titular;
-        this.cpf = cpf;
+    @Enumerated(value = EnumType.STRING)
+    private TipoContaEnum tipoConta;
+
+    public Conta() {
     }
 
-    public Conta(Long agencia, Long digito, BigDecimal saldo, String titular, String cpf) {
+    public Conta(Long agencia, Long digito, BigDecimal saldo, Cliente titular, TipoContaEnum tipoConta) {
         this.agencia = agencia;
         this.digito = digito;
         this.saldo = saldo;
         this.titular = titular;
-        this.cpf = cpf;
+        this.tipoConta = tipoConta;
     }
 
     public Long getId() {
@@ -61,19 +72,36 @@ public class Conta {
         this.saldo = saldo;
     }
 
-    public String getTitular() {
+    public Cliente getTitular() {
         return titular;
     }
 
-    public void setTitular(String titular) {
+    public void setTitular(Cliente titular) {
         this.titular = titular;
     }
 
-    public String getCpf() {
-        return cpf;
+    public TipoContaEnum getTipoConta() {
+        return tipoConta;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setTipoConta(TipoContaEnum tipoConta) {
+        this.tipoConta = tipoConta;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Conta conta = (Conta) o;
+        return Objects.equals(id, conta.id)
+                && Objects.equals(agencia, conta.agencia)
+                && Objects.equals(digito, conta.digito)
+                && Objects.equals(titular, conta.titular)
+                && tipoConta == conta.tipoConta;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, agencia, digito, titular, tipoConta);
     }
 }

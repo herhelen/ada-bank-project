@@ -1,7 +1,9 @@
 package com.ada.banco.domain.usecase;
 
 import com.ada.banco.domain.gateway.ContaGateway;
+import com.ada.banco.domain.model.Cliente;
 import com.ada.banco.domain.model.Conta;
+import com.ada.banco.domain.model.enums.TipoContaEnum;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,36 +27,38 @@ public class CriarNovaContaTest {
     @Test
     public void deveCriarNovaConta() throws Exception {
         // Given
+        Cliente titular = new Cliente("Pedro", "222222222");
         Conta conta =
-                new Conta(1L, 3L, BigDecimal.ZERO, "Pedro", "222222222");
-
-        Conta novaConta =
-                new Conta(1L, 1L, 3L, BigDecimal.ZERO, "Pedro", "222222222");
+                new Conta(1L, 3L, BigDecimal.ZERO, titular, TipoContaEnum.CONTA_CORRENTE);
 
         // When
         // Mocks response
-        when(contaGateway.buscarPorCpf(conta.getCpf())).thenReturn(null); // stub
+        when(contaGateway.buscarPorCpf(conta.getTitular().getCpf())).thenReturn(null); // stub
         when(contaGateway.salvar(any())).thenReturn(conta);
 
-       criarNovaConta.execute(conta);
+        Conta novaConta = criarNovaConta.execute(conta);
 
         // Then
         Assertions.assertAll(
-                () -> Assertions.assertEquals("Pedro", novaConta.getTitular())
+                () -> Assertions.assertEquals(titular, novaConta.getTitular()),
+                () -> Assertions.assertEquals(1L, novaConta.getAgencia()),
+                () -> Assertions.assertEquals(3L, novaConta.getDigito()),
+                () -> Assertions.assertEquals(TipoContaEnum.CONTA_CORRENTE, novaConta.getTipoConta())
         );
 
-        verify(contaGateway, times(1)).buscarPorCpf(conta.getCpf());
+        verify(contaGateway, times(1)).buscarPorCpf(conta.getTitular().getCpf());
         verify(contaGateway, times(1)).salvar(any());
     }
 
     @Test
     public void deveLancarExceptionCasoAContaJaExista() {
         // Given
+        Cliente titular = new Cliente("Pedro", "123456789");
         Conta conta =
-                new Conta(2L, 3L, BigDecimal.ZERO, "Pedro", "123456789");
+                new Conta(2L, 3L, BigDecimal.ZERO, titular, TipoContaEnum.CONTA_CORRENTE);
 
         // When Then
-        when(contaGateway.buscarPorCpf(conta.getCpf())).thenReturn(conta);
+        when(contaGateway.buscarPorCpf(conta.getTitular().getCpf())).thenReturn(conta);
 
         Throwable throwable = Assertions.assertThrows(
                 Exception.class,
@@ -63,7 +67,7 @@ public class CriarNovaContaTest {
 
         Assertions.assertEquals("Usuario ja possui uma conta", throwable.getMessage());
 
-        verify(contaGateway, times(1)).buscarPorCpf(conta.getCpf());
+        verify(contaGateway, times(1)).buscarPorCpf(conta.getTitular().getCpf());
         verify(contaGateway, never()).salvar(conta);
     }
 }

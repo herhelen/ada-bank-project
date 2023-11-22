@@ -11,7 +11,7 @@ public class CriarNovaConta {
     }
 
     public Conta execute(Conta conta) throws Exception {
-        if(contaGateway.buscarPorCpf(conta.getCpf()) != null) {
+        if(contaGateway.buscarPorCpf(conta.getTitular().getCpf()) != null) {
             throw new Exception("Usuario ja possui uma conta");
         }
 
