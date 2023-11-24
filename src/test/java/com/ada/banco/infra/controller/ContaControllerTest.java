@@ -55,4 +55,29 @@ public class ContaControllerTest {
         Assertions.assertEquals("Pedro", contaCriada.getTitular());
     }
 
+    @Test
+    public void criarConta_JaExistente_DeveRetornarStatus400() throws Exception {
+        // given
+        String requestConta = this.objectMapper.writeValueAsString(
+                new Conta(1L, 3L, BigDecimal.ZERO, "Pedro", "222222222",
+                        TipoContaEnum.POUPANCA));
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .post("/bank-api/v1/contas")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestConta));
+
+        // when
+        this.mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .post("/bank-api/v1/contas")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestConta))
+                .andExpectAll(
+                        MockMvcResultMatchers.status().isBadRequest(),
+                        MockMvcResultMatchers.status().reason("Erro ao criar nova conta")
+                );
+
+    }
 }
