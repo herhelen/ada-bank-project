@@ -2,6 +2,7 @@ package com.ada.banco.domain.usecase;
 
 import com.ada.banco.domain.gateway.ContaGateway;
 import com.ada.banco.domain.model.Conta;
+import com.ada.banco.domain.model.enums.TipoContaEnum;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,17 +27,15 @@ public class CriarNovaContaTest {
     public void deveCriarNovaConta() throws Exception {
         // Given
         Conta conta =
-                new Conta(1L, 3L, BigDecimal.ZERO, "Pedro", "222222222");
-
-        Conta novaConta =
-                new Conta(1L, 1L, 3L, BigDecimal.ZERO, "Pedro", "222222222");
+                new Conta(1L, 3L, BigDecimal.ZERO, "Pedro", "222222222",
+                        TipoContaEnum.CONTA_CORRENTE);
 
         // When
         // Mocks response
         when(contaGateway.buscarPorCpf(conta.getCpf())).thenReturn(null); // stub
         when(contaGateway.salvar(any())).thenReturn(conta);
 
-       criarNovaConta.execute(conta);
+        Conta novaConta = criarNovaConta.execute(conta);
 
         // Then
         Assertions.assertAll(
@@ -51,7 +50,8 @@ public class CriarNovaContaTest {
     public void deveLancarExceptionCasoAContaJaExista() {
         // Given
         Conta conta =
-                new Conta(2L, 3L, BigDecimal.ZERO, "Pedro", "123456789");
+                new Conta(2L, 3L, BigDecimal.ZERO, "Pedro", "123456789",
+                        TipoContaEnum.POUPANCA);
 
         // When Then
         when(contaGateway.buscarPorCpf(conta.getCpf())).thenReturn(conta);
