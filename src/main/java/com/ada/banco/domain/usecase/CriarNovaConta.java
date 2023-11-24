@@ -2,7 +2,9 @@ package com.ada.banco.domain.usecase;
 
 import com.ada.banco.domain.gateway.ContaGateway;
 import com.ada.banco.domain.model.Conta;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CriarNovaConta {
     private ContaGateway contaGateway;
 
