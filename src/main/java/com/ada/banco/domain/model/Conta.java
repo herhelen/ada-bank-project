@@ -1,20 +1,34 @@
 package com.ada.banco.domain.model;
 
 import com.ada.banco.domain.model.enums.TipoContaEnum;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
+@Entity
 public class Conta {
-    private Long id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id; // número da conta
+
+    @Column(nullable = false)
     private Long agencia;
+
+    @Column(nullable = false)
     private Long digito;
+
+    @Column(nullable = false)
     private BigDecimal saldo;
 
-    // Usuario / Titular
+    @Column(length = 50, nullable = false)
     private String titular;
+
+    @Column(unique = true, nullable = false)
     private String cpf;
 
+    @Enumerated(value = EnumType.STRING)
     private TipoContaEnum tipoConta;
 
     public Conta() {
