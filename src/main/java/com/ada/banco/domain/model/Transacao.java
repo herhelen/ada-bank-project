@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-public abstract class Transacao {
+public class Transacao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,16 +32,13 @@ public abstract class Transacao {
     public Transacao() {
     }
 
-    public Transacao(Date dataHora, Conta conta, BigDecimal valor, TipoTransacaoEnum tipoTransacao) {
-        this.dataHora = dataHora;
+    public Transacao(Conta conta, BigDecimal valor, TipoTransacaoEnum tipoTransacao) {
         this.conta = conta;
         this.valor = valor;
         this.tipoTransacao = tipoTransacao;
     }
 
-    public Transacao(Date dataHora, Conta conta, Conta contaDestino, BigDecimal valor,
-                     TipoTransacaoEnum tipoTransacao) {
-        this.dataHora = dataHora;
+    public Transacao(Conta conta, Conta contaDestino, BigDecimal valor, TipoTransacaoEnum tipoTransacao) {
         this.conta = conta;
         this.contaDestino = contaDestino;
         this.valor = valor;
