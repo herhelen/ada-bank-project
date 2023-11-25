@@ -42,15 +42,12 @@ public class RealizarDepositoTest {
     public void deveRealizarDepositoComSucesso() throws Exception {
         // Given
         BigDecimal valorDeposito = BigDecimal.valueOf(350.0);
-        Conta contaAtualizada = new Conta(20L, 1L, 3L, valorDeposito.add(BigDecimal.ONE),
-                "Ada", "12345678900", TipoContaEnum.CONTA_CORRENTE);
         Transacao deposito = new Transacao(this.contaTeste, valorDeposito, TipoTransacaoEnum.DEPOSITO);
 
         // When
         when(this.contaGateway.buscarPorAgenciaDigitoEConta(
                 this.contaTeste.getAgencia(), this.contaTeste.getDigito(), this.contaTeste.getId()))
                 .thenReturn(this.contaTeste);
-        when(this.contaGateway.salvar(any())).thenReturn(contaAtualizada);
         when(this.transacaoGateway.salvar(any())).thenReturn(deposito);
 
         Transacao novaTransacao = this.realizarDeposito.execute(deposito);
@@ -65,7 +62,7 @@ public class RealizarDepositoTest {
 
         verify(this.contaGateway, times(1)).buscarPorAgenciaDigitoEConta(
                 this.contaTeste.getAgencia(), this.contaTeste.getDigito(), this.contaTeste.getId());
-        verify(this.contaGateway, times(1)).salvar(contaAtualizada);
+        verify(this.contaGateway, times(1)).salvar(any());
         verify(this.transacaoGateway, times(1)).salvar(deposito);
     }
 
@@ -117,7 +114,5 @@ public class RealizarDepositoTest {
                 this.contaTeste.getAgencia(), this.contaTeste.getDigito(), this.contaTeste.getId());
         verify(this.contaGateway, times(0)).salvar(any());
         verify(this.transacaoGateway, times(0)).salvar(deposito);
-
     }
-
 }

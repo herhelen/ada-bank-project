@@ -43,15 +43,12 @@ public class RealizarSaqueTest {
     public void deveRealizarSaqueComSucesso() throws Exception {
         // Given
         BigDecimal valorSaque = BigDecimal.valueOf(350.0);
-        Conta contaAtualizada = new Conta(20L, 1L, 3L, BigDecimal.ZERO,
-                "Ada", "12345678900", TipoContaEnum.CONTA_CORRENTE);
         Transacao saque = new Transacao(this.contaTeste, valorSaque, TipoTransacaoEnum.SAQUE);
 
         // When
         when(this.contaGateway.buscarPorAgenciaDigitoEConta(
                 this.contaTeste.getAgencia(), this.contaTeste.getDigito(), this.contaTeste.getId()))
                 .thenReturn(this.contaTeste);
-        when(this.contaGateway.salvar(any())).thenReturn(contaAtualizada);
         when(this.transacaoGateway.salvar(any())).thenReturn(saque);
 
         Transacao novaTransacao = this.realizarSaque.execute(saque);
