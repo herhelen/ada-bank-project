@@ -79,4 +79,98 @@ public class RealizarTransferenciaTest {
         verify(this.transacaoGateway, times(1)).salvar(transferencia);
     }
 
+    @Test
+    public void deveLancarExceptionCasoContaNaoExista() {
+        // Given
+        BigDecimal valorTransferencia = BigDecimal.valueOf(12.60);
+        Transacao transferencia = new Transacao(this.contaOrigemTeste, this.contaDestinoTeste, valorTransferencia,
+                TipoTransacaoEnum.TRANSFERENCIA);
+
+        // When
+        when(this.contaGateway.buscarPorAgenciaDigitoEConta(
+                this.contaOrigemTeste.getAgencia(), this.contaOrigemTeste.getDigito(), this.contaOrigemTeste.getId()))
+                .thenReturn(null);
+        when(this.contaGateway.buscarPorAgenciaDigitoEConta(
+                this.contaDestinoTeste.getAgencia(), this.contaDestinoTeste.getDigito(), this.contaDestinoTeste.getId()))
+                .thenReturn(null);
+
+        // Then
+        Throwable throwable = Assertions.assertThrows(
+                Exception.class,
+                () -> this.realizarTransferencia.execute(transferencia)
+        );
+
+        Assertions.assertEquals("Conta(s) inexistente(s) para realizar a transferência.",
+                throwable.getMessage());
+
+        verify(this.contaGateway, times(1)).buscarPorAgenciaDigitoEConta(
+                this.contaOrigemTeste.getAgencia(), this.contaOrigemTeste.getDigito(), this.contaOrigemTeste.getId());
+        verify(this.contaGateway, times(1)).buscarPorAgenciaDigitoEConta(
+                this.contaDestinoTeste.getAgencia(), this.contaDestinoTeste.getDigito(), this.contaDestinoTeste.getId());
+        verify(this.contaGateway, times(0)).salvar(any());
+        verify(this.transacaoGateway, times(0)).salvar(transferencia);
+    }
+
+    @Test
+    public void deveLancarExceptionCasoValorTransferenciaMenorIgualZero() {
+        // Given
+        BigDecimal valorTransferencia = BigDecimal.valueOf(-159.99);
+        Transacao transferencia = new Transacao(this.contaOrigemTeste, this.contaDestinoTeste, valorTransferencia,
+                TipoTransacaoEnum.TRANSFERENCIA);
+
+        // When
+        when(this.contaGateway.buscarPorAgenciaDigitoEConta(
+                this.contaOrigemTeste.getAgencia(), this.contaOrigemTeste.getDigito(), this.contaOrigemTeste.getId()))
+                .thenReturn(this.contaOrigemTeste);
+        when(this.contaGateway.buscarPorAgenciaDigitoEConta(
+                this.contaDestinoTeste.getAgencia(), this.contaDestinoTeste.getDigito(), this.contaDestinoTeste.getId()))
+                .thenReturn(this.contaDestinoTeste);
+
+        // Then
+        Throwable throwable = Assertions.assertThrows(
+                Exception.class,
+                () -> this.realizarTransferencia.execute(transferencia)
+        );
+
+        Assertions.assertEquals("O valor da transferência deve ser maior que nulo.", throwable.getMessage());
+
+        verify(this.contaGateway, times(1)).buscarPorAgenciaDigitoEConta(
+                this.contaOrigemTeste.getAgencia(), this.contaOrigemTeste.getDigito(), this.contaOrigemTeste.getId());
+        verify(this.contaGateway, times(1)).buscarPorAgenciaDigitoEConta(
+                this.contaDestinoTeste.getAgencia(), this.contaDestinoTeste.getDigito(), this.contaDestinoTeste.getId());
+        verify(this.contaGateway, times(0)).salvar(any());
+        verify(this.transacaoGateway, times(0)).salvar(transferencia);
+    }
+
+    @Test
+    public void deveLancarExceptionCasoSaldoInsuficiente() {
+        // Given
+        BigDecimal valorTransferencia = BigDecimal.valueOf(2000.0);
+        Transacao transferencia = new Transacao(this.contaOrigemTeste, this.contaDestinoTeste, valorTransferencia,
+                TipoTransacaoEnum.TRANSFERENCIA);
+
+        // When
+        when(this.contaGateway.buscarPorAgenciaDigitoEConta(
+                this.contaOrigemTeste.getAgencia(), this.contaOrigemTeste.getDigito(), this.contaOrigemTeste.getId()))
+                .thenReturn(this.contaOrigemTeste);
+        when(this.contaGateway.buscarPorAgenciaDigitoEConta(
+                this.contaDestinoTeste.getAgencia(), this.contaDestinoTeste.getDigito(), this.contaDestinoTeste.getId()))
+                .thenReturn(this.contaDestinoTeste);
+
+        // Then
+        Throwable throwable = Assertions.assertThrows(
+                Exception.class,
+                () -> this.realizarTransferencia.execute(transferencia)
+        );
+
+        Assertions.assertEquals("A conta origem não possui saldo suficiente para realizar a transferência.",
+                throwable.getMessage());
+
+        verify(this.contaGateway, times(1)).buscarPorAgenciaDigitoEConta(
+                this.contaOrigemTeste.getAgencia(), this.contaOrigemTeste.getDigito(), this.contaOrigemTeste.getId());
+        verify(this.contaGateway, times(1)).buscarPorAgenciaDigitoEConta(
+                this.contaDestinoTeste.getAgencia(), this.contaDestinoTeste.getDigito(), this.contaDestinoTeste.getId());
+        verify(this.contaGateway, times(0)).salvar(any());
+        verify(this.transacaoGateway, times(0)).salvar(transferencia);
+    }
 }
