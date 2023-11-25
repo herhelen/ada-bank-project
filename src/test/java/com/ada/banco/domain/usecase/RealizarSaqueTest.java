@@ -70,4 +70,79 @@ public class RealizarSaqueTest {
         verify(this.transacaoGateway, times(1)).salvar(saque);
     }
 
+    @Test
+    public void deveLancarExceptionCasoContaNaoExista() {
+        // Given
+        BigDecimal valorSaque = BigDecimal.valueOf(350.0);
+        Transacao saque = new Transacao(this.contaTeste, valorSaque, TipoTransacaoEnum.SAQUE);
+
+        // When
+        when(this.contaGateway.buscarPorAgenciaDigitoEConta(
+                this.contaTeste.getAgencia(), this.contaTeste.getDigito(), this.contaTeste.getId()))
+                .thenReturn(null);
+
+        // Then
+        Throwable throwable = Assertions.assertThrows(
+                Exception.class,
+                () -> this.realizarSaque.execute(saque)
+        );
+
+        Assertions.assertEquals("Conta inexistente para realizar o saque.", throwable.getMessage());
+
+        verify(this.contaGateway, times(1)).buscarPorAgenciaDigitoEConta(
+                this.contaTeste.getAgencia(), this.contaTeste.getDigito(), this.contaTeste.getId());
+        verify(this.contaGateway, times(0)).salvar(any());
+        verify(this.transacaoGateway, times(0)).salvar(saque);
+    }
+
+    @Test
+    public void deveLancarExceptionCasoValorSaqueMenorIgualZero() {
+        // Given
+        BigDecimal valorSaque = BigDecimal.valueOf(-159.99);
+        Transacao saque = new Transacao(this.contaTeste, valorSaque, TipoTransacaoEnum.SAQUE);
+
+        // When
+        when(this.contaGateway.buscarPorAgenciaDigitoEConta(
+                this.contaTeste.getAgencia(), this.contaTeste.getDigito(), this.contaTeste.getId()))
+                .thenReturn(this.contaTeste);
+
+        // Then
+        Throwable throwable = Assertions.assertThrows(
+                Exception.class,
+                () -> this.realizarSaque.execute(saque)
+        );
+
+        Assertions.assertEquals("O valor do saque deve ser maior que nulo.", throwable.getMessage());
+
+        verify(this.contaGateway, times(1)).buscarPorAgenciaDigitoEConta(
+                this.contaTeste.getAgencia(), this.contaTeste.getDigito(), this.contaTeste.getId());
+        verify(this.contaGateway, times(0)).salvar(any());
+        verify(this.transacaoGateway, times(0)).salvar(saque);
+    }
+
+    @Test
+    public void deveLancarExceptionCasoSaldoInsuficiente() {
+        // Given
+        BigDecimal valorSaque = BigDecimal.valueOf(350.1);
+        Transacao saque = new Transacao(this.contaTeste, valorSaque, TipoTransacaoEnum.SAQUE);
+
+        // When
+        when(this.contaGateway.buscarPorAgenciaDigitoEConta(
+                this.contaTeste.getAgencia(), this.contaTeste.getDigito(), this.contaTeste.getId()))
+                .thenReturn(this.contaTeste);
+
+        // Then
+        Throwable throwable = Assertions.assertThrows(
+                Exception.class,
+                () -> this.realizarSaque.execute(saque)
+        );
+
+        Assertions.assertEquals("A conta não possui saldo suficiente para realizar o saque.",
+                throwable.getMessage());
+
+        verify(this.contaGateway, times(1)).buscarPorAgenciaDigitoEConta(
+                this.contaTeste.getAgencia(), this.contaTeste.getDigito(), this.contaTeste.getId());
+        verify(this.contaGateway, times(0)).salvar(any());
+        verify(this.transacaoGateway, times(0)).salvar(saque);
+    }
 }
