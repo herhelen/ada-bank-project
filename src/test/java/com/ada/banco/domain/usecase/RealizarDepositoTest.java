@@ -61,4 +61,57 @@ public class RealizarDepositoTest {
         verify(this.transacaoGateway, times(1)).salvar(deposito);
     }
 
+    @Test
+    public void deveLancarExceptionCasoContaNaoExista() {
+        // Given
+        BigDecimal valorDeposito = BigDecimal.valueOf(350.0);
+        Conta conta = new Conta(20L, 1L, 3L, BigDecimal.ONE,
+                "Ada", "12345678900", TipoContaEnum.CONTA_CORRENTE);
+        Transacao deposito = new Transacao(conta, valorDeposito, TipoTransacaoEnum.DEPOSITO);
+
+        // When
+        when(this.contaGateway.buscarPorAgenciaDigitoEConta(
+                conta.getAgencia(), conta.getDigito(), conta.getId())).thenReturn(null);
+
+        // Then
+        Throwable throwable = Assertions.assertThrows(
+                Exception.class,
+                () -> this.realizarDeposito.execute(deposito)
+        );
+
+        Assertions.assertEquals("Conta inexistente para realizar o depósito.", throwable.getMessage());
+
+        verify(this.contaGateway, times(1)).buscarPorAgenciaDigitoEConta(
+                conta.getAgencia(), conta.getDigito(), conta.getId());
+        verify(this.contaGateway, times(0)).salvar(any());
+        verify(this.transacaoGateway, times(0)).salvar(deposito);
+    }
+
+    @Test
+    public void deveLancarExceptionCasoValorDepositoMenorIgualZero() {
+        // Given
+        BigDecimal valorDeposito = BigDecimal.valueOf(-159.99);
+        Conta conta = new Conta(20L, 1L, 3L, BigDecimal.ONE,
+                "Ada", "12345678900", TipoContaEnum.CONTA_CORRENTE);
+        Transacao deposito = new Transacao(conta, valorDeposito, TipoTransacaoEnum.DEPOSITO);
+
+        // When
+        when(this.contaGateway.buscarPorAgenciaDigitoEConta(
+                conta.getAgencia(), conta.getDigito(), conta.getId())).thenReturn(conta);
+
+        // Then
+        Throwable throwable = Assertions.assertThrows(
+                Exception.class,
+                () -> this.realizarDeposito.execute(deposito)
+        );
+
+        Assertions.assertEquals("O valor do depósito deve ser maior que nulo.", throwable.getMessage());
+
+        verify(this.contaGateway, times(1)).buscarPorAgenciaDigitoEConta(
+                conta.getAgencia(), conta.getDigito(), conta.getId());
+        verify(this.contaGateway, times(0)).salvar(any());
+        verify(this.transacaoGateway, times(0)).salvar(deposito);
+
+    }
+
 }
