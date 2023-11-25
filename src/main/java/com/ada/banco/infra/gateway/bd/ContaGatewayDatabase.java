@@ -19,6 +19,11 @@ public class ContaGatewayDatabase implements ContaGateway {
     }
 
     @Override
+    public Conta buscarPorAgenciaDigitoEConta(Long agencia, Long digito, Long contaId) {
+        return this.contaRepository.findByAgenciaAndDigitoAndId(agencia, digito, contaId);
+    }
+
+    @Override
     public Conta salvar(Conta conta) {
         return this.contaRepository.save(conta);
     }

@@ -29,25 +29,19 @@ public class RealizarDepositoTest {
     @InjectMocks
     private RealizarDeposito realizarDeposito;
 
-//    @BeforeEach
-//    public void beforeEach() {
-//        this.contaGateway.salvar(new Conta(1L, 3L, BigDecimal.ZERO, "Ada", "12345678900",
-//                TipoContaEnum.CONTA_CORRENTE));
-//    }
-
-
     @Test
     public void deveRealizarDepositoComSucesso() throws Exception {
         // Given
         BigDecimal valorDeposito = BigDecimal.valueOf(350.0);
-        Conta conta = new Conta(1L, 3L, BigDecimal.ONE, "Ada", "12345678900",
-                TipoContaEnum.CONTA_CORRENTE);
-        Conta contaAtualizada = new Conta(1L, 3L, valorDeposito.add(BigDecimal.ONE), "Ada", "12345678900",
-                TipoContaEnum.CONTA_CORRENTE);
+        Conta conta = new Conta(20L, 1L, 3L, BigDecimal.ONE,
+                "Ada", "12345678900", TipoContaEnum.CONTA_CORRENTE);
+        Conta contaAtualizada = new Conta(20L, 1L, 3L, valorDeposito.add(BigDecimal.ONE),
+                "Ada", "12345678900", TipoContaEnum.CONTA_CORRENTE);
         Transacao deposito = new Transacao(conta, valorDeposito, TipoTransacaoEnum.DEPOSITO);
 
         // When
-        when(this.contaGateway.buscarPorCpf(conta.getCpf())).thenReturn(conta);
+        when(this.contaGateway.buscarPorAgenciaDigitoEConta(
+                conta.getAgencia(), conta.getDigito(), conta.getId())).thenReturn(conta);
         when(this.contaGateway.salvar(any())).thenReturn(contaAtualizada);
         when(this.transacaoGateway.salvar(any())).thenReturn(deposito);
 
@@ -55,16 +49,16 @@ public class RealizarDepositoTest {
 
         // Then
         Assertions.assertAll(
-                () -> Assertions.assertEquals(conta, deposito.getConta()),
-                () -> Assertions.assertEquals(valorDeposito, deposito.getValor()),
+                () -> Assertions.assertEquals(conta, novaTransacao.getConta()),
+                () -> Assertions.assertEquals(valorDeposito, novaTransacao.getValor()),
                 () -> Assertions.assertEquals(0,
-                        deposito.getConta().getSaldo().compareTo(BigDecimal.valueOf(351.0)))
+                        novaTransacao.getConta().getSaldo().compareTo(BigDecimal.valueOf(351.0)))
         );
 
-        verify(this.contaGateway, times(2)).buscarPorCpf(conta.getCpf());
+        verify(this.contaGateway, times(1)).buscarPorAgenciaDigitoEConta(
+                conta.getAgencia(), conta.getDigito(), conta.getId());
         verify(this.contaGateway, times(1)).salvar(contaAtualizada);
         verify(this.transacaoGateway, times(1)).salvar(deposito);
-
     }
 
 }

@@ -20,7 +20,12 @@ public class RealizarDeposito {
     }
 
     public Transacao execute(Transacao transacao) throws Exception {
-        if(this.contaGateway.buscarPorCpf(transacao.getConta().getCpf()) == null) {
+        Conta conta = this.contaGateway.buscarPorAgenciaDigitoEConta(
+                transacao.getConta().getAgencia(),
+                transacao.getConta().getDigito(),
+                transacao.getConta().getId());
+
+        if(conta == null) {
             throw new Exception("Conta inexistente para realizar o depósito.");
         }
 
@@ -29,11 +34,10 @@ public class RealizarDeposito {
         }
 
         // realizar o depósito e atualizar a conta
-        Conta conta = this.contaGateway.buscarPorCpf(transacao.getConta().getCpf());
         conta.setSaldo(conta.getSaldo().add(transacao.getValor()));
         this.contaGateway.salvar(conta);
 
-        // colocar a data e a hora da transação e  salvá-la
+        // colocar a data e a hora da transação e salvá-la
         transacao.setDataHora(Date.from(Instant.now()));
         transacao.setConta(conta);
         return this.transacaoGateway.salvar(transacao);

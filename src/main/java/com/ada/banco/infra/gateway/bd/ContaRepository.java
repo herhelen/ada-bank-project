@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface ContaRepository extends JpaRepository<Conta, Long> {
 
     Conta findByCpf(String cpf);
+
+    Conta findByAgenciaAndDigitoAndId(Long agencia, Long digito, Long id);
 }
