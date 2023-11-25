@@ -7,6 +7,7 @@ import com.ada.banco.domain.model.Transacao;
 import com.ada.banco.domain.model.enums.TipoContaEnum;
 import com.ada.banco.domain.model.enums.TipoTransacaoEnum;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,19 +30,26 @@ public class RealizarDepositoTest {
     @InjectMocks
     private RealizarDeposito realizarDeposito;
 
+    private Conta contaTeste;
+
+    @BeforeEach
+    public void beforeEach() {
+        this.contaTeste = new Conta(20L, 1L, 3L, BigDecimal.ONE,
+                "Ada", "12345678900", TipoContaEnum.CONTA_CORRENTE);
+    }
+
     @Test
     public void deveRealizarDepositoComSucesso() throws Exception {
         // Given
         BigDecimal valorDeposito = BigDecimal.valueOf(350.0);
-        Conta conta = new Conta(20L, 1L, 3L, BigDecimal.ONE,
-                "Ada", "12345678900", TipoContaEnum.CONTA_CORRENTE);
         Conta contaAtualizada = new Conta(20L, 1L, 3L, valorDeposito.add(BigDecimal.ONE),
                 "Ada", "12345678900", TipoContaEnum.CONTA_CORRENTE);
-        Transacao deposito = new Transacao(conta, valorDeposito, TipoTransacaoEnum.DEPOSITO);
+        Transacao deposito = new Transacao(this.contaTeste, valorDeposito, TipoTransacaoEnum.DEPOSITO);
 
         // When
         when(this.contaGateway.buscarPorAgenciaDigitoEConta(
-                conta.getAgencia(), conta.getDigito(), conta.getId())).thenReturn(conta);
+                this.contaTeste.getAgencia(), this.contaTeste.getDigito(), this.contaTeste.getId()))
+                .thenReturn(this.contaTeste);
         when(this.contaGateway.salvar(any())).thenReturn(contaAtualizada);
         when(this.transacaoGateway.salvar(any())).thenReturn(deposito);
 
@@ -49,14 +57,14 @@ public class RealizarDepositoTest {
 
         // Then
         Assertions.assertAll(
-                () -> Assertions.assertEquals(conta, novaTransacao.getConta()),
+                () -> Assertions.assertEquals(this.contaTeste, novaTransacao.getConta()),
                 () -> Assertions.assertEquals(valorDeposito, novaTransacao.getValor()),
                 () -> Assertions.assertEquals(0,
                         novaTransacao.getConta().getSaldo().compareTo(BigDecimal.valueOf(351.0)))
         );
 
         verify(this.contaGateway, times(1)).buscarPorAgenciaDigitoEConta(
-                conta.getAgencia(), conta.getDigito(), conta.getId());
+                this.contaTeste.getAgencia(), this.contaTeste.getDigito(), this.contaTeste.getId());
         verify(this.contaGateway, times(1)).salvar(contaAtualizada);
         verify(this.transacaoGateway, times(1)).salvar(deposito);
     }
@@ -65,13 +73,12 @@ public class RealizarDepositoTest {
     public void deveLancarExceptionCasoContaNaoExista() {
         // Given
         BigDecimal valorDeposito = BigDecimal.valueOf(350.0);
-        Conta conta = new Conta(20L, 1L, 3L, BigDecimal.ONE,
-                "Ada", "12345678900", TipoContaEnum.CONTA_CORRENTE);
-        Transacao deposito = new Transacao(conta, valorDeposito, TipoTransacaoEnum.DEPOSITO);
+        Transacao deposito = new Transacao(this.contaTeste, valorDeposito, TipoTransacaoEnum.DEPOSITO);
 
         // When
         when(this.contaGateway.buscarPorAgenciaDigitoEConta(
-                conta.getAgencia(), conta.getDigito(), conta.getId())).thenReturn(null);
+                this.contaTeste.getAgencia(), this.contaTeste.getDigito(), this.contaTeste.getId()))
+                .thenReturn(null);
 
         // Then
         Throwable throwable = Assertions.assertThrows(
@@ -82,7 +89,7 @@ public class RealizarDepositoTest {
         Assertions.assertEquals("Conta inexistente para realizar o depósito.", throwable.getMessage());
 
         verify(this.contaGateway, times(1)).buscarPorAgenciaDigitoEConta(
-                conta.getAgencia(), conta.getDigito(), conta.getId());
+                this.contaTeste.getAgencia(), this.contaTeste.getDigito(), this.contaTeste.getId());
         verify(this.contaGateway, times(0)).salvar(any());
         verify(this.transacaoGateway, times(0)).salvar(deposito);
     }
@@ -91,13 +98,12 @@ public class RealizarDepositoTest {
     public void deveLancarExceptionCasoValorDepositoMenorIgualZero() {
         // Given
         BigDecimal valorDeposito = BigDecimal.valueOf(-159.99);
-        Conta conta = new Conta(20L, 1L, 3L, BigDecimal.ONE,
-                "Ada", "12345678900", TipoContaEnum.CONTA_CORRENTE);
-        Transacao deposito = new Transacao(conta, valorDeposito, TipoTransacaoEnum.DEPOSITO);
+        Transacao deposito = new Transacao(this.contaTeste, valorDeposito, TipoTransacaoEnum.DEPOSITO);
 
         // When
         when(this.contaGateway.buscarPorAgenciaDigitoEConta(
-                conta.getAgencia(), conta.getDigito(), conta.getId())).thenReturn(conta);
+                this.contaTeste.getAgencia(), this.contaTeste.getDigito(), this.contaTeste.getId()))
+                .thenReturn(this.contaTeste);
 
         // Then
         Throwable throwable = Assertions.assertThrows(
@@ -108,7 +114,7 @@ public class RealizarDepositoTest {
         Assertions.assertEquals("O valor do depósito deve ser maior que nulo.", throwable.getMessage());
 
         verify(this.contaGateway, times(1)).buscarPorAgenciaDigitoEConta(
-                conta.getAgencia(), conta.getDigito(), conta.getId());
+                this.contaTeste.getAgencia(), this.contaTeste.getDigito(), this.contaTeste.getId());
         verify(this.contaGateway, times(0)).salvar(any());
         verify(this.transacaoGateway, times(0)).salvar(deposito);
 
