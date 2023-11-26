@@ -1,0 +1,194 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > TransacaoController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.ada.banco.infra.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: TransacaoController (com.ada.banco.infra.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TransacaoController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91,2%
+  </span>
+  <span class="absValue">
+    (31/34)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.ada.banco.infra.controller;
+&nbsp;
+&nbsp;import com.ada.banco.domain.model.Transacao;
+&nbsp;import com.ada.banco.domain.response.GenericResponse;
+&nbsp;import com.ada.banco.domain.usecase.RealizarDeposito;
+&nbsp;import com.ada.banco.domain.usecase.RealizarSaque;
+&nbsp;import com.ada.banco.domain.usecase.RealizarTransferencia;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;import org.springframework.web.server.ResponseStatusException;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/bank-api/v1/transacao&quot;)
+&nbsp;public class TransacaoController {
+&nbsp;
+&nbsp;    private RealizarDeposito realizarDeposito;
+&nbsp;    private RealizarSaque realizarSaque;
+&nbsp;    private RealizarTransferencia realizarTransferencia;
+&nbsp;
+&nbsp;    public TransacaoController(RealizarDeposito realizarDeposito, RealizarSaque realizarSaque,
+<b class="fc">&nbsp;                               RealizarTransferencia realizarTransferencia) {</b>
+<b class="fc">&nbsp;        this.realizarDeposito = realizarDeposito;</b>
+<b class="fc">&nbsp;        this.realizarSaque = realizarSaque;</b>
+<b class="fc">&nbsp;        this.realizarTransferencia = realizarTransferencia;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/depositar&quot;)
+&nbsp;    @ResponseStatus(HttpStatus.OK)
+&nbsp;    public ResponseEntity&lt;GenericResponse&gt; depositar(@RequestBody Transacao transacao) {
+&nbsp;        try {
+<b class="fc">&nbsp;            Transacao deposito = this.realizarDeposito.execute(transacao);</b>
+&nbsp;
+<b class="fc">&nbsp;            if (deposito != null) {</b>
+<b class="fc">&nbsp;                GenericResponse response = new GenericResponse();</b>
+<b class="fc">&nbsp;                response.setStatus(HttpStatus.OK.value());</b>
+<b class="fc">&nbsp;                response.setData(deposito);</b>
+<b class="fc">&nbsp;                response.setMessage(&quot;Depósito realizado com sucesso!&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;                return new ResponseEntity&lt;&gt;(response, HttpStatus.OK);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return new ResponseEntity&lt;&gt;(HttpStatus.INTERNAL_SERVER_ERROR);</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (Exception exception) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/sacar&quot;)
+&nbsp;    @ResponseStatus(HttpStatus.OK)
+&nbsp;    public ResponseEntity&lt;GenericResponse&gt; sacar(@RequestBody Transacao transacao) {
+&nbsp;        try {
+<b class="fc">&nbsp;            Transacao saque = this.realizarSaque.execute(transacao);</b>
+&nbsp;
+<b class="fc">&nbsp;            if (saque != null) {</b>
+<b class="fc">&nbsp;                GenericResponse response = new GenericResponse();</b>
+<b class="fc">&nbsp;                response.setStatus(HttpStatus.OK.value());</b>
+<b class="fc">&nbsp;                response.setData(saque);</b>
+<b class="fc">&nbsp;                response.setMessage(&quot;Saque realizado com sucesso!&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;                return new ResponseEntity&lt;&gt;(response, HttpStatus.OK);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return new ResponseEntity&lt;&gt;(HttpStatus.INTERNAL_SERVER_ERROR);</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (Exception exception) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/transferir&quot;)
+&nbsp;    @ResponseStatus(HttpStatus.OK)
+&nbsp;    public ResponseEntity&lt;GenericResponse&gt; transferir(@RequestBody Transacao transacao) {
+&nbsp;        try {
+<b class="fc">&nbsp;            Transacao trasferencia = this.realizarTransferencia.execute(transacao);</b>
+&nbsp;
+<b class="fc">&nbsp;            if (trasferencia != null) {</b>
+<b class="fc">&nbsp;                GenericResponse response = new GenericResponse();</b>
+<b class="fc">&nbsp;                response.setStatus(HttpStatus.OK.value());</b>
+<b class="fc">&nbsp;                response.setData(trasferencia);</b>
+<b class="fc">&nbsp;                response.setMessage(&quot;Transferência realizada com sucesso!&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;                return new ResponseEntity&lt;&gt;(response, HttpStatus.OK);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return new ResponseEntity&lt;&gt;(HttpStatus.INTERNAL_SERVER_ERROR);</b>
+&nbsp;
+<b class="fc">&nbsp;        } catch (Exception exception) {</b>
+<b class="fc">&nbsp;            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-26 09:37</div>
+</div>
+</body>
+</html>

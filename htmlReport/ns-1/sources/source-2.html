@@ -1,0 +1,243 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Transacao</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.ada.banco.domain.model</a>
+</div>
+
+<h1>Coverage Summary for Class: Transacao (com.ada.banco.domain.model)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Transacao</td>
+<td class="coverageStat">
+  <span class="percent">
+    94,4%
+  </span>
+  <span class="absValue">
+    (17/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97,1%
+  </span>
+  <span class="absValue">
+    (34/35)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Transacao$HibernateInstantiator$hz4YXZOs</td>
+  </tr>
+  <tr>
+    <td class="name">Transacao$HibernateInstantiator$mr7HwRx3</td>
+  </tr>
+  <tr>
+    <td class="name">Transacao$HibernateProxy$eQ90UzGH</td>
+  </tr>
+  <tr>
+    <td class="name">Transacao$HibernateProxy$WpempFBC</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    94,4%
+  </span>
+  <span class="absValue">
+    (17/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97,1%
+  </span>
+  <span class="absValue">
+    (34/35)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.ada.banco.domain.model;
+&nbsp;
+&nbsp;import com.ada.banco.domain.model.enums.TipoTransacaoEnum;
+&nbsp;import jakarta.persistence.*;
+&nbsp;
+&nbsp;import java.math.BigDecimal;
+&nbsp;import java.util.Date;
+&nbsp;import java.util.Objects;
+&nbsp;
+&nbsp;@Entity
+&nbsp;public class Transacao {
+&nbsp;
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    private Long id;
+&nbsp;
+&nbsp;    @Column(nullable = false)
+&nbsp;    private Date dataHora;
+&nbsp;
+&nbsp;    @ManyToOne
+&nbsp;    private Conta conta;
+&nbsp;
+&nbsp;    @ManyToOne
+&nbsp;    private Conta contaDestino;
+&nbsp;
+&nbsp;    @Column(nullable = false)
+&nbsp;    private BigDecimal valor;
+&nbsp;
+&nbsp;    @Enumerated(EnumType.STRING)
+&nbsp;    private TipoTransacaoEnum tipoTransacao;
+&nbsp;
+<b class="fc">&nbsp;    public Transacao() {</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public Transacao(Conta conta, BigDecimal valor) {</b>
+<b class="fc">&nbsp;        this.conta = conta;</b>
+<b class="fc">&nbsp;        this.valor = valor;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public Transacao(Conta conta, Conta contaDestino, BigDecimal valor) {</b>
+<b class="fc">&nbsp;        this.conta = conta;</b>
+<b class="fc">&nbsp;        this.contaDestino = contaDestino;</b>
+<b class="fc">&nbsp;        this.valor = valor;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Transacao(Long id, Date dataHora, Conta conta, Conta contaDestino, BigDecimal valor,
+<b class="fc">&nbsp;                     TipoTransacaoEnum tipoTransacao) {</b>
+<b class="fc">&nbsp;        this.id = id;</b>
+<b class="fc">&nbsp;        this.dataHora = dataHora;</b>
+<b class="fc">&nbsp;        this.conta = conta;</b>
+<b class="fc">&nbsp;        this.contaDestino = contaDestino;</b>
+<b class="fc">&nbsp;        this.valor = valor;</b>
+<b class="fc">&nbsp;        this.tipoTransacao = tipoTransacao;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Long getId() {
+<b class="fc">&nbsp;        return id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setId(Long id) {
+<b class="fc">&nbsp;        this.id = id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Date getDataHora() {
+<b class="fc">&nbsp;        return dataHora;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setDataHora(Date dataHora) {
+<b class="fc">&nbsp;        this.dataHora = dataHora;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Conta getConta() {
+<b class="fc">&nbsp;        return conta;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setConta(Conta conta) {
+<b class="fc">&nbsp;        this.conta = conta;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Conta getContaDestino() {
+<b class="fc">&nbsp;        return contaDestino;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setContaDestino(Conta contaDestino) {
+<b class="fc">&nbsp;        this.contaDestino = contaDestino;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public BigDecimal getValor() {
+<b class="fc">&nbsp;        return valor;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setValor(BigDecimal valor) {
+<b class="fc">&nbsp;        this.valor = valor;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public TipoTransacaoEnum getTipoTransacao() {
+<b class="fc">&nbsp;        return tipoTransacao;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setTipoTransacao(TipoTransacaoEnum tipoTransacao) {
+<b class="fc">&nbsp;        this.tipoTransacao = tipoTransacao;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public boolean equals(Object o) {
+<b class="fc">&nbsp;        if (this == o) return true;</b>
+<b class="fc">&nbsp;        if (o == null || getClass() != o.getClass()) return false;</b>
+<b class="fc">&nbsp;        Transacao transacao = (Transacao) o;</b>
+<b class="fc">&nbsp;        return Objects.equals(dataHora, transacao.dataHora)</b>
+<b class="fc">&nbsp;                &amp;&amp; Objects.equals(conta, transacao.conta)</b>
+<b class="fc">&nbsp;                &amp;&amp; Objects.equals(contaDestino, transacao.contaDestino)</b>
+<b class="fc">&nbsp;                &amp;&amp; Objects.equals(valor, transacao.valor)</b>
+&nbsp;                &amp;&amp; tipoTransacao == transacao.tipoTransacao;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public int hashCode() {
+<b class="nc">&nbsp;        return Objects.hash(dataHora, conta, contaDestino, valor, tipoTransacao);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-26 09:37</div>
+</div>
+</body>
+</html>

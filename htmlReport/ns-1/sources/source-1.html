@@ -1,0 +1,258 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Conta</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.ada.banco.domain.model</a>
+</div>
+
+<h1>Coverage Summary for Class: Conta (com.ada.banco.domain.model)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Conta</td>
+<td class="coverageStat">
+  <span class="percent">
+    95%
+  </span>
+  <span class="absValue">
+    (19/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97,6%
+  </span>
+  <span class="absValue">
+    (41/42)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Conta$HibernateInstantiator$89VlfpCt</td>
+  </tr>
+  <tr>
+    <td class="name">Conta$HibernateInstantiator$zZPeAnBv</td>
+  </tr>
+  <tr>
+    <td class="name">Conta$HibernateProxy$5w8ol6ch</td>
+  </tr>
+  <tr>
+    <td class="name">Conta$HibernateProxy$UHY4ygrI</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    95%
+  </span>
+  <span class="absValue">
+    (19/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97,6%
+  </span>
+  <span class="absValue">
+    (41/42)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.ada.banco.domain.model;
+&nbsp;
+&nbsp;import com.ada.banco.domain.model.enums.TipoContaEnum;
+&nbsp;import jakarta.persistence.*;
+&nbsp;
+&nbsp;import java.math.BigDecimal;
+&nbsp;import java.util.Objects;
+&nbsp;
+&nbsp;@Entity
+&nbsp;public class Conta {
+&nbsp;
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    private Long id; // número da conta
+&nbsp;
+&nbsp;    @Column(nullable = false)
+&nbsp;    private Long agencia;
+&nbsp;
+&nbsp;    @Column(nullable = false)
+&nbsp;    private Long digito;
+&nbsp;
+&nbsp;    @Column(nullable = false)
+&nbsp;    private BigDecimal saldo;
+&nbsp;
+&nbsp;    @Column(length = 50, nullable = false)
+&nbsp;    private String titular;
+&nbsp;
+&nbsp;    @Column(unique = true, nullable = false)
+&nbsp;    private String cpf;
+&nbsp;
+&nbsp;    @Enumerated(value = EnumType.STRING)
+&nbsp;    private TipoContaEnum tipoConta;
+&nbsp;
+<b class="fc">&nbsp;    public Conta() {</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Conta(Long id, Long agencia, Long digito, BigDecimal saldo, String titular, String cpf,
+<b class="fc">&nbsp;                 TipoContaEnum tipoConta) {</b>
+<b class="fc">&nbsp;        this.id = id;</b>
+<b class="fc">&nbsp;        this.agencia = agencia;</b>
+<b class="fc">&nbsp;        this.digito = digito;</b>
+<b class="fc">&nbsp;        this.saldo = saldo;</b>
+<b class="fc">&nbsp;        this.titular = titular;</b>
+<b class="fc">&nbsp;        this.cpf = cpf;</b>
+<b class="fc">&nbsp;        this.tipoConta = tipoConta;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public Conta(Long agencia, Long digito, BigDecimal saldo, String titular, String cpf, TipoContaEnum tipoConta) {</b>
+<b class="fc">&nbsp;        this.agencia = agencia;</b>
+<b class="fc">&nbsp;        this.digito = digito;</b>
+<b class="fc">&nbsp;        this.saldo = saldo;</b>
+<b class="fc">&nbsp;        this.titular = titular;</b>
+<b class="fc">&nbsp;        this.cpf = cpf;</b>
+<b class="fc">&nbsp;        this.tipoConta = tipoConta;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public Conta(Long id, Long agencia, Long digito) {</b>
+<b class="fc">&nbsp;        this.id = id;</b>
+<b class="fc">&nbsp;        this.agencia = agencia;</b>
+<b class="fc">&nbsp;        this.digito = digito;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Long getId() {
+<b class="fc">&nbsp;        return id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setId(Long id) {
+<b class="fc">&nbsp;        this.id = id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Long getAgencia() {
+<b class="fc">&nbsp;        return agencia;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setAgencia(Long agencia) {
+<b class="fc">&nbsp;        this.agencia = agencia;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Long getDigito() {
+<b class="fc">&nbsp;        return digito;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setDigito(Long digito) {
+<b class="fc">&nbsp;        this.digito = digito;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public BigDecimal getSaldo() {
+<b class="fc">&nbsp;        return saldo;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setSaldo(BigDecimal saldo) {
+<b class="fc">&nbsp;        this.saldo = saldo;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getTitular() {
+<b class="fc">&nbsp;        return titular;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setTitular(String titular) {
+<b class="fc">&nbsp;        this.titular = titular;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getCpf() {
+<b class="fc">&nbsp;        return cpf;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCpf(String cpf) {
+<b class="fc">&nbsp;        this.cpf = cpf;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public TipoContaEnum getTipoConta() {
+<b class="fc">&nbsp;        return tipoConta;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setTipoConta(TipoContaEnum tipoConta) {
+<b class="fc">&nbsp;        this.tipoConta = tipoConta;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public boolean equals(Object o) {
+<b class="fc">&nbsp;        if (this == o) return true;</b>
+<b class="fc">&nbsp;        if (o == null || getClass() != o.getClass()) return false;</b>
+<b class="fc">&nbsp;        Conta conta = (Conta) o;</b>
+<b class="fc">&nbsp;        return Objects.equals(id, conta.id)</b>
+<b class="fc">&nbsp;                &amp;&amp; Objects.equals(agencia, conta.agencia)</b>
+<b class="fc">&nbsp;                &amp;&amp; Objects.equals(digito, conta.digito)</b>
+<b class="fc">&nbsp;                &amp;&amp; Objects.equals(cpf, conta.cpf)</b>
+&nbsp;                &amp;&amp; tipoConta == conta.tipoConta;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public int hashCode() {
+<b class="nc">&nbsp;        return Objects.hash(id, agencia, digito, cpf, tipoConta);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-26 09:37</div>
+</div>
+</body>
+</html>
