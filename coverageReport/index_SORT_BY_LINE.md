@@ -12,7 +12,7 @@ Overall Coverage Summary
 Coverage Breakdown
 ------------------
 
-| [Package](index.md) | [Class, %](index_SORT_BY_CLASS.md) | [Method, %](index_SORT_BY_METHOD.md) | [Line, %](index_SORT_BY_LINE_DESC.md) |
+| [Package](index.md) | [Class, %](index_SORT_BY_CLASS.md) | [Method, %](index_SORT_BY_METHOD.md) | Line, % |
 | --- | --- | --- | --- |
 | [com.ada.banco.domain.model.enums](ns-2/index_SORT_BY_LINE.md) | 0% (0/2) | 0% (0/4) | 0% (0/7) |
 | [com.ada.banco.infra.controller](ns-4/index_SORT_BY_LINE.md) | 100% (2/2) | 100% (8/8) | 92,5% (49/53) |

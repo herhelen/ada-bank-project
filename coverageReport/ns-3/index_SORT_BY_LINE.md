@@ -10,7 +10,7 @@ Coverage Summary for Package: com.ada.banco.domain.usecase
   
   
 
-| [Class](index.md) | [Class, %](index_SORT_BY_CLASS.md) | [Method, %](index_SORT_BY_METHOD.md) | [Line, %](index_SORT_BY_LINE_DESC.md) |
+| [Class](index.md) | [Class, %](index_SORT_BY_CLASS.md) | [Method, %](index_SORT_BY_METHOD.md) | Line, % |
 | --- | --- | --- | --- |
 | [CriarNovaConta](sources/source-1.md) | 100% (1/1) | 100% (2/2) | 100% (5/5) |
 | [ListarTodasContas](sources/source-2.md) | 100% (1/1) | 100% (2/2) | 100% (3/3) |

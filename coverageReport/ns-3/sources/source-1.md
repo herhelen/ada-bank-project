@@ -1,5 +1,3 @@
- Coverage Report > CriarNovaConta @import "../../css/coverage.css"; @import "../../css/idea.min.css"; 
-
 Current scope: [all classes](../../index.md) | [com.ada.banco.domain.usecase](../index.md)
 
 Coverage Summary for Class: CriarNovaConta (com.ada.banco.domain.usecase)

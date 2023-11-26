@@ -10,7 +10,7 @@ Coverage Summary for Package: com.ada.banco.infra.controller
   
   
 
-| [Class](index.md) | [Class, %](index_SORT_BY_CLASS.md) | [Method, %](index_SORT_BY_METHOD.md) | [Line, %](index_SORT_BY_LINE_DESC.md) |
+| [Class](index.md) | [Class, %](index_SORT_BY_CLASS.md) | [Method, %](index_SORT_BY_METHOD.md) | Line, % |
 | --- | --- | --- | --- |
 | [TransacaoController](sources/source-2.md) | 100% (1/1) | 100% (4/4) | 91,2% (31/34) |
 | [ContaController](sources/source-1.md) | 100% (1/1) | 100% (4/4) | 94,7% (18/19) |

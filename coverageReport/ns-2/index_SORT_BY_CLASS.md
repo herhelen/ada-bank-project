@@ -10,7 +10,7 @@ Coverage Summary for Package: com.ada.banco.domain.model.enums
   
   
 
-| [Class](index.md) | [Class, %](index_SORT_BY_CLASS_DESC.md) | [Method, %](index_SORT_BY_METHOD.md) | [Line, %](index_SORT_BY_LINE.md) |
+| [Class](index.md) | Class, % | [Method, %](index_SORT_BY_METHOD.md) | [Line, %](index_SORT_BY_LINE.md) |
 | --- | --- | --- | --- |
 | [TipoContaEnum](sources/source-1.md) | 0% (0/1) | 0% (0/2) | 0% (0/3) |
 | [TipoTransacaoEnum](sources/source-2.md) | 0% (0/1) | 0% (0/2) | 0% (0/4) |
