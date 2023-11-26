@@ -4,6 +4,7 @@ import com.ada.banco.domain.gateway.ContaGateway;
 import com.ada.banco.domain.gateway.TransacaoGateway;
 import com.ada.banco.domain.model.Conta;
 import com.ada.banco.domain.model.Transacao;
+import com.ada.banco.domain.model.enums.TipoTransacaoEnum;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -43,9 +44,10 @@ public class RealizarSaque {
         conta.setSaldo(conta.getSaldo().subtract(transacao.getValor()));
         this.contaGateway.salvar(conta);
 
-        // colocar a data e a hora da transação e salvá-la
+        // colocar a data e a hora e o tipo da transação e salvá-la
         transacao.setDataHora(Date.from(Instant.now()));
         transacao.setConta(conta);
+        transacao.setTipoTransacao(TipoTransacaoEnum.SAQUE);
         return this.transacaoGateway.salvar(transacao);
     }
 }

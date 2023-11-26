@@ -32,17 +32,15 @@ public class Transacao {
     public Transacao() {
     }
 
-    public Transacao(Conta conta, BigDecimal valor, TipoTransacaoEnum tipoTransacao) {
+    public Transacao(Conta conta, BigDecimal valor) {
         this.conta = conta;
         this.valor = valor;
-        this.tipoTransacao = tipoTransacao;
     }
 
-    public Transacao(Conta conta, Conta contaDestino, BigDecimal valor, TipoTransacaoEnum tipoTransacao) {
+    public Transacao(Conta conta, Conta contaDestino, BigDecimal valor) {
         this.conta = conta;
         this.contaDestino = contaDestino;
         this.valor = valor;
-        this.tipoTransacao = tipoTransacao;
     }
 
     public Transacao(Long id, Date dataHora, Conta conta, Conta contaDestino, BigDecimal valor,

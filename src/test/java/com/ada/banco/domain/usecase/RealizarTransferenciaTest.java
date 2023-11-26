@@ -46,8 +46,7 @@ public class RealizarTransferenciaTest {
     public void deveRealizarTransferenciaComSucesso() throws Exception {
         // Given
         BigDecimal valorTransferencia = BigDecimal.valueOf(12.60);
-        Transacao transferencia = new Transacao(this.contaOrigemTeste, this.contaDestinoTeste, valorTransferencia,
-                TipoTransacaoEnum.TRANSFERENCIA);
+        Transacao transferencia = new Transacao(this.contaOrigemTeste, this.contaDestinoTeste, valorTransferencia);
 
         // When
         when(this.contaGateway.buscarPorAgenciaDigitoEConta(
@@ -62,6 +61,7 @@ public class RealizarTransferenciaTest {
 
         // Then
         Assertions.assertAll(
+                () -> Assertions.assertEquals(TipoTransacaoEnum.TRANSFERENCIA, novaTransacao.getTipoTransacao()),
                 () -> Assertions.assertEquals(this.contaOrigemTeste, novaTransacao.getConta()),
                 () -> Assertions.assertEquals(this.contaDestinoTeste, novaTransacao.getContaDestino()),
                 () -> Assertions.assertEquals(valorTransferencia, novaTransacao.getValor()),
@@ -83,8 +83,7 @@ public class RealizarTransferenciaTest {
     public void deveLancarExceptionCasoContaNaoExista() {
         // Given
         BigDecimal valorTransferencia = BigDecimal.valueOf(12.60);
-        Transacao transferencia = new Transacao(this.contaOrigemTeste, this.contaDestinoTeste, valorTransferencia,
-                TipoTransacaoEnum.TRANSFERENCIA);
+        Transacao transferencia = new Transacao(this.contaOrigemTeste, this.contaDestinoTeste, valorTransferencia);
 
         // When
         when(this.contaGateway.buscarPorAgenciaDigitoEConta(
@@ -115,8 +114,7 @@ public class RealizarTransferenciaTest {
     public void deveLancarExceptionCasoValorTransferenciaMenorIgualZero() {
         // Given
         BigDecimal valorTransferencia = BigDecimal.valueOf(-159.99);
-        Transacao transferencia = new Transacao(this.contaOrigemTeste, this.contaDestinoTeste, valorTransferencia,
-                TipoTransacaoEnum.TRANSFERENCIA);
+        Transacao transferencia = new Transacao(this.contaOrigemTeste, this.contaDestinoTeste, valorTransferencia);
 
         // When
         when(this.contaGateway.buscarPorAgenciaDigitoEConta(
@@ -146,8 +144,7 @@ public class RealizarTransferenciaTest {
     public void deveLancarExceptionCasoSaldoInsuficiente() {
         // Given
         BigDecimal valorTransferencia = BigDecimal.valueOf(2000.0);
-        Transacao transferencia = new Transacao(this.contaOrigemTeste, this.contaDestinoTeste, valorTransferencia,
-                TipoTransacaoEnum.TRANSFERENCIA);
+        Transacao transferencia = new Transacao(this.contaOrigemTeste, this.contaDestinoTeste, valorTransferencia);
 
         // When
         when(this.contaGateway.buscarPorAgenciaDigitoEConta(

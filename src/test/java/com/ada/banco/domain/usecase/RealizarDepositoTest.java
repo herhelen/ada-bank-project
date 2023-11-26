@@ -42,7 +42,7 @@ public class RealizarDepositoTest {
     public void deveRealizarDepositoComSucesso() throws Exception {
         // Given
         BigDecimal valorDeposito = BigDecimal.valueOf(350.0);
-        Transacao deposito = new Transacao(this.contaTeste, valorDeposito, TipoTransacaoEnum.DEPOSITO);
+        Transacao deposito = new Transacao(this.contaTeste, valorDeposito);
 
         // When
         when(this.contaGateway.buscarPorAgenciaDigitoEConta(
@@ -54,6 +54,7 @@ public class RealizarDepositoTest {
 
         // Then
         Assertions.assertAll(
+                () -> Assertions.assertEquals(TipoTransacaoEnum.DEPOSITO, novaTransacao.getTipoTransacao()),
                 () -> Assertions.assertEquals(this.contaTeste, novaTransacao.getConta()),
                 () -> Assertions.assertEquals(valorDeposito, novaTransacao.getValor()),
                 () -> Assertions.assertEquals(0,
@@ -70,7 +71,7 @@ public class RealizarDepositoTest {
     public void deveLancarExceptionCasoContaNaoExista() {
         // Given
         BigDecimal valorDeposito = BigDecimal.valueOf(350.0);
-        Transacao deposito = new Transacao(this.contaTeste, valorDeposito, TipoTransacaoEnum.DEPOSITO);
+        Transacao deposito = new Transacao(this.contaTeste, valorDeposito);
 
         // When
         when(this.contaGateway.buscarPorAgenciaDigitoEConta(
@@ -95,7 +96,7 @@ public class RealizarDepositoTest {
     public void deveLancarExceptionCasoValorDepositoMenorIgualZero() {
         // Given
         BigDecimal valorDeposito = BigDecimal.valueOf(-159.99);
-        Transacao deposito = new Transacao(this.contaTeste, valorDeposito, TipoTransacaoEnum.DEPOSITO);
+        Transacao deposito = new Transacao(this.contaTeste, valorDeposito);
 
         // When
         when(this.contaGateway.buscarPorAgenciaDigitoEConta(

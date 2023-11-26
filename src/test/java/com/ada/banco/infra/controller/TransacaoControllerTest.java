@@ -46,7 +46,7 @@ public class TransacaoControllerTest {
         // given
         Conta turingConta = new Conta(7L, 2L, 1L);
         String requestDeposito = this.objectMapper.writeValueAsString(
-                new Transacao(turingConta, BigDecimal.valueOf(8.09), TipoTransacaoEnum.DEPOSITO));
+                new Transacao(turingConta, BigDecimal.valueOf(8.09)));
 
         // when
         this.mockMvc.perform(
@@ -79,7 +79,7 @@ public class TransacaoControllerTest {
         // given
         Conta turingConta = new Conta(7L, 888L, 1L);
         String requestDeposito = this.objectMapper.writeValueAsString(
-                new Transacao(turingConta, BigDecimal.valueOf(8.09), TipoTransacaoEnum.DEPOSITO));
+                new Transacao(turingConta, BigDecimal.valueOf(8.09)));
 
         // when then
         this.mockMvc.perform(
@@ -98,7 +98,7 @@ public class TransacaoControllerTest {
         // given
         Conta adaConta = new Conta(3L, 1L, 1L);
         String requestSaque = this.objectMapper.writeValueAsString(
-                new Transacao(adaConta, BigDecimal.valueOf(8.09), TipoTransacaoEnum.SAQUE));
+                new Transacao(adaConta, BigDecimal.valueOf(8.09)));
 
         // when
         this.mockMvc.perform(
@@ -131,7 +131,7 @@ public class TransacaoControllerTest {
         // given
         Conta lovelaceConta = new Conta(6L, 2L, 1L);
         String requestSaque = this.objectMapper.writeValueAsString(
-                new Transacao(lovelaceConta, BigDecimal.TEN, TipoTransacaoEnum.SAQUE));
+                new Transacao(lovelaceConta, BigDecimal.TEN));
 
         // when then
         this.mockMvc.perform(
@@ -151,7 +151,7 @@ public class TransacaoControllerTest {
         Conta turingUmConta = new Conta(8L, 2L, 1L);
         Conta turingDoisConta = new Conta(9L, 2L, 1L);
         String requestTransferencia = this.objectMapper.writeValueAsString(
-                new Transacao(turingUmConta, turingDoisConta, BigDecimal.valueOf(45.50), TipoTransacaoEnum.TRANSFERENCIA));
+                new Transacao(turingUmConta, turingDoisConta, BigDecimal.valueOf(45.50)));
 
         // when
         this.mockMvc.perform(
@@ -184,7 +184,7 @@ public class TransacaoControllerTest {
         // given
         Conta lovelaceUmConta = new Conta(5L, 1L, 1L);
         String requestTransferencia = this.objectMapper.writeValueAsString(
-                new Transacao(lovelaceUmConta, lovelaceUmConta, BigDecimal.valueOf(5.0), TipoTransacaoEnum.TRANSFERENCIA));
+                new Transacao(lovelaceUmConta, lovelaceUmConta, BigDecimal.valueOf(5.0)));
 
         // when then
         this.mockMvc.perform(

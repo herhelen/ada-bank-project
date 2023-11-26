@@ -43,7 +43,7 @@ public class RealizarSaqueTest {
     public void deveRealizarSaqueComSucesso() throws Exception {
         // Given
         BigDecimal valorSaque = BigDecimal.valueOf(350.0);
-        Transacao saque = new Transacao(this.contaTeste, valorSaque, TipoTransacaoEnum.SAQUE);
+        Transacao saque = new Transacao(this.contaTeste, valorSaque);
 
         // When
         when(this.contaGateway.buscarPorAgenciaDigitoEConta(
@@ -55,6 +55,7 @@ public class RealizarSaqueTest {
 
         // Then
         Assertions.assertAll(
+                () -> Assertions.assertEquals(TipoTransacaoEnum.SAQUE, novaTransacao.getTipoTransacao()),
                 () -> Assertions.assertEquals(this.contaTeste, novaTransacao.getConta()),
                 () -> Assertions.assertEquals(valorSaque, novaTransacao.getValor()),
                 () -> Assertions.assertEquals(0,
@@ -71,7 +72,7 @@ public class RealizarSaqueTest {
     public void deveLancarExceptionCasoContaNaoExista() {
         // Given
         BigDecimal valorSaque = BigDecimal.valueOf(350.0);
-        Transacao saque = new Transacao(this.contaTeste, valorSaque, TipoTransacaoEnum.SAQUE);
+        Transacao saque = new Transacao(this.contaTeste, valorSaque);
 
         // When
         when(this.contaGateway.buscarPorAgenciaDigitoEConta(
@@ -96,7 +97,7 @@ public class RealizarSaqueTest {
     public void deveLancarExceptionCasoValorSaqueMenorIgualZero() {
         // Given
         BigDecimal valorSaque = BigDecimal.valueOf(-159.99);
-        Transacao saque = new Transacao(this.contaTeste, valorSaque, TipoTransacaoEnum.SAQUE);
+        Transacao saque = new Transacao(this.contaTeste, valorSaque);
 
         // When
         when(this.contaGateway.buscarPorAgenciaDigitoEConta(
@@ -121,7 +122,7 @@ public class RealizarSaqueTest {
     public void deveLancarExceptionCasoSaldoInsuficiente() {
         // Given
         BigDecimal valorSaque = BigDecimal.valueOf(350.1);
-        Transacao saque = new Transacao(this.contaTeste, valorSaque, TipoTransacaoEnum.SAQUE);
+        Transacao saque = new Transacao(this.contaTeste, valorSaque);
 
         // When
         when(this.contaGateway.buscarPorAgenciaDigitoEConta(
