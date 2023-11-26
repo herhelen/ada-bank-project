@@ -45,6 +45,16 @@ public class Transacao {
         this.tipoTransacao = tipoTransacao;
     }
 
+    public Transacao(Long id, Date dataHora, Conta conta, Conta contaDestino, BigDecimal valor,
+                     TipoTransacaoEnum tipoTransacao) {
+        this.id = id;
+        this.dataHora = dataHora;
+        this.conta = conta;
+        this.contaDestino = contaDestino;
+        this.valor = valor;
+        this.tipoTransacao = tipoTransacao;
+    }
+
     public Long getId() {
         return id;
     }
