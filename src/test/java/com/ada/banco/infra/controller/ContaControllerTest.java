@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -33,8 +34,8 @@ public class ContaControllerTest {
     private ContaRepository contaRepository;
 
     @Test
-    @Sql(scripts = "../../scripts/truncate_conta.sql",
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts="../../scripts/truncate_tables_cleanup.sql",
+            executionPhase=Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void criarConta_ComSucesso_DeveRetornarStatus201() throws Exception {
         // given
         String requestConta = this.objectMapper.writeValueAsString(
@@ -59,8 +60,8 @@ public class ContaControllerTest {
     }
 
     @Test
-    @Sql(scripts = "../../scripts/truncate_conta.sql",
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts="../../scripts/truncate_tables_cleanup.sql",
+            executionPhase=Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void criarConta_JaExistente_DeveRetornarStatus400() throws Exception {
         // given
         String requestConta = this.objectMapper.writeValueAsString(
@@ -86,8 +87,12 @@ public class ContaControllerTest {
     }
 
     @Test
-    @Sql(scripts = "../../scripts/insert_contas.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @SqlGroup({
+            @Sql(scripts="../../scripts/insert_contas.sql",
+                    executionPhase=Sql.ExecutionPhase.BEFORE_TEST_METHOD),
+            @Sql(scripts="../../scripts/truncate_tables_cleanup.sql",
+                    executionPhase=Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    })
     public void listarTodasContas_DeveRetornarStatus200() throws Exception {
 
         // when
