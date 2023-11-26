@@ -4,6 +4,8 @@ import com.ada.banco.domain.gateway.ContaGateway;
 import com.ada.banco.domain.model.Conta;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class ContaGatewayDatabase implements ContaGateway {
 
@@ -21,6 +23,11 @@ public class ContaGatewayDatabase implements ContaGateway {
     @Override
     public Conta buscarPorAgenciaDigitoEConta(Long agencia, Long digito, Long contaId) {
         return this.contaRepository.findByAgenciaAndDigitoAndId(agencia, digito, contaId);
+    }
+
+    @Override
+    public List<Conta> buscarTodasContas() {
+        return this.contaRepository.findAll();
     }
 
     @Override
