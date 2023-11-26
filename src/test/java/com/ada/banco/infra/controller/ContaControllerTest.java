@@ -101,24 +101,24 @@ public class ContaControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         // then
-        Conta contaLovelace = this.contaRepository.findByCpf("11122233344488");
+        Conta lovelaceConta = this.contaRepository.findByCpf("11122233344488");
         Assertions.assertAll(
-                () -> Assertions.assertEquals(4L, contaLovelace.getId()),
-                () -> Assertions.assertEquals(1L, contaLovelace.getAgencia()),
-                () -> Assertions.assertEquals(1L, contaLovelace.getDigito()),
-                () -> Assertions.assertEquals(0, contaLovelace.getSaldo().compareTo(BigDecimal.valueOf(333.33))),
-                () -> Assertions.assertEquals(TipoContaEnum.CONTA_CORRENTE, contaLovelace.getTipoConta()),
-                () -> Assertions.assertEquals("Lovelace", contaLovelace.getTitular())
+                () -> Assertions.assertEquals(4L, lovelaceConta.getId()),
+                () -> Assertions.assertEquals(1L, lovelaceConta.getAgencia()),
+                () -> Assertions.assertEquals(1L, lovelaceConta.getDigito()),
+                () -> Assertions.assertEquals(0, lovelaceConta.getSaldo().compareTo(BigDecimal.valueOf(333.33))),
+                () -> Assertions.assertEquals(TipoContaEnum.CONTA_CORRENTE, lovelaceConta.getTipoConta()),
+                () -> Assertions.assertEquals("Lovelace", lovelaceConta.getTitular())
         );
 
-        Conta contaBard = this.contaRepository.findByCpf("11122233344444");
+        Conta bardConta = this.contaRepository.findByCpf("11122233344444");
         Assertions.assertAll(
-                () -> Assertions.assertEquals(10L, contaBard.getId()),
-                () -> Assertions.assertEquals(2L, contaBard.getAgencia()),
-                () -> Assertions.assertEquals(2L, contaBard.getDigito()),
-                () -> Assertions.assertEquals(0, contaBard.getSaldo().compareTo(BigDecimal.valueOf(55500.0))),
-                () -> Assertions.assertEquals(TipoContaEnum.POUPANCA, contaBard.getTipoConta()),
-                () -> Assertions.assertEquals("Bard", contaBard.getTitular())
+                () -> Assertions.assertEquals(10L, bardConta.getId()),
+                () -> Assertions.assertEquals(2L, bardConta.getAgencia()),
+                () -> Assertions.assertEquals(2L, bardConta.getDigito()),
+                () -> Assertions.assertEquals(0, bardConta.getSaldo().compareTo(BigDecimal.valueOf(55500.0))),
+                () -> Assertions.assertEquals(TipoContaEnum.POUPANCA, bardConta.getTipoConta()),
+                () -> Assertions.assertEquals("Bard", bardConta.getTitular())
         );
 
     }
