@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CriarNovaConta {
+
     private ContaGateway contaGateway;
 
     public CriarNovaConta(ContaGateway contaGateway) {
@@ -13,11 +14,10 @@ public class CriarNovaConta {
     }
 
     public Conta execute(Conta conta) throws Exception {
-        if(contaGateway.buscarPorCpf(conta.getCpf()) != null) {
-            throw new Exception("Usuario ja possui uma conta");
+        if(this.contaGateway.buscarPorCpf(conta.getCpf()) != null) {
+            throw new Exception("Usuário já possui uma conta.");
         }
 
-        Conta novaConta = contaGateway.salvar(conta);
-        return novaConta;
+        return this.contaGateway.salvar(conta);
     }
 }

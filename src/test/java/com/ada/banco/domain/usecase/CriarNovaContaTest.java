@@ -61,7 +61,7 @@ public class CriarNovaContaTest {
                 () -> criarNovaConta.execute(conta)
         );
 
-        Assertions.assertEquals("Usuario ja possui uma conta", throwable.getMessage());
+        Assertions.assertEquals("Usuário já possui uma conta.", throwable.getMessage());
 
         verify(contaGateway, times(1)).buscarPorCpf(conta.getCpf());
         verify(contaGateway, never()).salvar(conta);
