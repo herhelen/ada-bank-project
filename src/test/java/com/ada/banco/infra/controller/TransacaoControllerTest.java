@@ -92,4 +92,56 @@ public class TransacaoControllerTest {
                         MockMvcResultMatchers.status().reason("Conta inexistente para realizar o depósito.")
                 );
     }
+
+    @Test
+    public void sacar_ComSucesso_DeveRetornarStatus200() throws Exception {
+        // given
+        Conta adaConta = new Conta(3L, 1L, 1L);
+        String requestSaque = this.objectMapper.writeValueAsString(
+                new Transacao(adaConta, BigDecimal.valueOf(8.09), TipoTransacaoEnum.SAQUE));
+
+        // when
+        this.mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .post("/bank-api/v1/transacao/sacar")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestSaque))
+                .andExpectAll(
+                        MockMvcResultMatchers.status().isOk(),
+                        MockMvcResultMatchers.jsonPath("$.message",
+                                is("Saque realizado com sucesso!"))
+                );
+
+        // then
+        List<Transacao> transacoes = this.transacaoRepository.findAllByConta(adaConta);
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(1, transacoes.size()),
+                () -> Assertions.assertEquals(0,
+                        BigDecimal.valueOf(8.09).compareTo(transacoes.get(0).getValor())),
+                () -> Assertions.assertEquals(TipoTransacaoEnum.SAQUE, transacoes.get(0).getTipoTransacao()),
+                () -> Assertions.assertEquals(3L, transacoes.get(0).getConta().getId()),
+                () -> Assertions.assertEquals("Ada 3", transacoes.get(0).getConta().getTitular()),
+                () -> Assertions.assertEquals(0,
+                        BigDecimal.valueOf(941.91).compareTo(transacoes.get(0).getConta().getSaldo()))
+        );
+    }
+
+    @Test
+    public void sacar_SaldoInsuficiente_DeveRetornarStatus400() throws Exception {
+        // given
+        Conta lovelaceConta = new Conta(6L, 2L, 1L);
+        String requestSaque = this.objectMapper.writeValueAsString(
+                new Transacao(lovelaceConta, BigDecimal.TEN, TipoTransacaoEnum.SAQUE));
+
+        // when then
+        this.mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .post("/bank-api/v1/transacao/sacar")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestSaque))
+                .andExpectAll(
+                        MockMvcResultMatchers.status().isBadRequest(),
+                        MockMvcResultMatchers.status().reason("A conta não possui saldo suficiente para realizar o saque.")
+                );
+    }
 }

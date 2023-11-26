@@ -46,4 +46,25 @@ public class TransacaoController {
         }
     }
 
+    @PostMapping("/sacar")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<GenericResponse> sacar(@RequestBody Transacao transacao) {
+        try {
+            Transacao saque = this.realizarSaque.execute(transacao);
+
+            if (saque != null) {
+                GenericResponse response = new GenericResponse();
+                response.setStatus(HttpStatus.OK.value());
+                response.setData(saque);
+                response.setMessage("Saque realizado com sucesso!");
+
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        } catch (Exception exception) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());
+        }
+    }
+
 }
