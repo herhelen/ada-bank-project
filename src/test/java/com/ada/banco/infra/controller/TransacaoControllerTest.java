@@ -24,6 +24,12 @@ import static org.hamcrest.Matchers.is;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@SqlGroup({
+        @Sql(scripts="../../scripts/insert_contas.sql",
+                executionPhase=Sql.ExecutionPhase.BEFORE_TEST_METHOD),
+        @Sql(scripts="../../scripts/truncate_tables_cleanup.sql",
+                executionPhase=Sql.ExecutionPhase.AFTER_TEST_METHOD)
+})
 public class TransacaoControllerTest {
 
     @Autowired
@@ -36,12 +42,6 @@ public class TransacaoControllerTest {
     private TransacaoRepository transacaoRepository;
 
     @Test
-    @SqlGroup({
-            @Sql(scripts="../../scripts/insert_contas.sql",
-                    executionPhase=Sql.ExecutionPhase.BEFORE_TEST_METHOD),
-            @Sql(scripts="../../scripts/truncate_tables_cleanup.sql",
-                    executionPhase=Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    })
     public void depositar_ComSucesso_DeveRetornarStatus200() throws Exception {
         // given
         Conta turingConta = new Conta(7L, 2L, 1L);
@@ -75,12 +75,6 @@ public class TransacaoControllerTest {
     }
 
     @Test
-    @SqlGroup({
-            @Sql(scripts="../../scripts/insert_contas.sql",
-                    executionPhase=Sql.ExecutionPhase.BEFORE_TEST_METHOD),
-            @Sql(scripts="../../scripts/truncate_tables_cleanup.sql",
-                    executionPhase=Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    })
     public void depositar_ContaInexistente_DeveRetornarStatus400() throws Exception {
         // given
         Conta turingConta = new Conta(7L, 888L, 1L);
