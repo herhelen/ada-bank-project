@@ -18,7 +18,7 @@ public class TransacaoGatewayDatabase implements TransacaoGateway {
 
     @Override
     public List<Transacao> buscaPorConta(Conta conta) {
-        return this.transacaoRepository.findAllByConta(conta);
+        return this.transacaoRepository.findAllByContaCustom(conta);
     }
 
     @Override

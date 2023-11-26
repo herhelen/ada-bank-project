@@ -181,7 +181,6 @@ public class ContaControllerTest {
                 "    }\n" +
                 "]";
 
-
         // when
         this.mockMvc.perform(MockMvcRequestBuilders
                         .get("/bank-api/v1/contas/extrato")
@@ -207,6 +206,68 @@ public class ContaControllerTest {
                 .andExpectAll(
                         MockMvcResultMatchers.status().isBadRequest(),
                         MockMvcResultMatchers.status().reason("Não é possível mostrar o extrato de uma conta inexistente.")
+                );
+    }
+
+    @Test
+    @Sql(scripts={"../../scripts/insert_contas.sql", "../../scripts/insert_transacoes.sql",
+            "../../scripts/update_saldos.sql"},
+            executionPhase=Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    public void mostrarExtratoConta_ContaDestino_DeveRetornarStatus200() throws Exception {
+
+        String resultadoEsperado = "[\n" +
+                "    {\n" +
+                "        \"id\": 3,\n" +
+                "        \"dataHora\": \"2023-11-26T09:12:28.911+00:00\",\n" +
+                "        \"conta\": {\n" +
+                "            \"id\": 2,\n" +
+                "            \"agencia\": 1,\n" +
+                "            \"digito\": 1,\n" +
+                "            \"saldo\": 619.45,\n" +
+                "            \"titular\": \"Ada 2\",\n" +
+                "            \"cpf\": \"11122233344466\",\n" +
+                "            \"tipoConta\": \"POUPANCA\"\n" +
+                "        },\n" +
+                "        \"contaDestino\": {\n" +
+                "            \"id\": 6,\n" +
+                "            \"agencia\": 2,\n" +
+                "            \"digito\": 1,\n" +
+                "            \"saldo\": 0.55,\n" +
+                "            \"titular\": \"Lovelace 2\",\n" +
+                "            \"cpf\": \"11122233344400\",\n" +
+                "            \"tipoConta\": \"POUPANCA\"\n" +
+                "        },\n" +
+                "        \"valor\": 1000.55,\n" +
+                "        \"tipoTransacao\": \"TRANSFERENCIA\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 4,\n" +
+                "        \"dataHora\": \"2023-11-26T09:23:13.894+00:00\",\n" +
+                "        \"conta\": {\n" +
+                "            \"id\": 6,\n" +
+                "            \"agencia\": 2,\n" +
+                "            \"digito\": 1,\n" +
+                "            \"saldo\": 0.55,\n" +
+                "            \"titular\": \"Lovelace 2\",\n" +
+                "            \"cpf\": \"11122233344400\",\n" +
+                "            \"tipoConta\": \"POUPANCA\"\n" +
+                "        },\n" +
+                "        \"contaDestino\": null,\n" +
+                "        \"valor\": 1000.00,\n" +
+                "        \"tipoTransacao\": \"SAQUE\"\n" +
+                "    }\n" +
+                "]";
+
+        // when
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .get("/bank-api/v1/contas/extrato")
+                        .queryParam("agencia", "2")
+                        .queryParam("digito", "1")
+                        .queryParam("conta", "6")
+                )
+                .andExpectAll(
+                        MockMvcResultMatchers.status().isOk(),
+                        MockMvcResultMatchers.content().json(resultadoEsperado)
                 );
     }
 }
