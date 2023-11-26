@@ -88,6 +88,7 @@ public class ContaControllerTest {
             executionPhase=Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void listarTodasContas_DeveRetornarStatus200() throws Exception {
 
+        // todo: rever esse teste
         // when
         this.mockMvc.perform(MockMvcRequestBuilders
                         .get("/bank-api/v1/contas"))
@@ -113,5 +114,85 @@ public class ContaControllerTest {
                 () -> Assertions.assertEquals(TipoContaEnum.POUPANCA, bardConta.getTipoConta()),
                 () -> Assertions.assertEquals("Bard", bardConta.getTitular())
         );
+    }
+
+    @Test
+    @Sql(scripts={"../../scripts/insert_contas.sql", "../../scripts/insert_transacoes.sql",
+            "../../scripts/update_saldos.sql"},
+            executionPhase=Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    public void mostrarExtratoConta_DeveRetornarStatus200() throws Exception {
+
+        String resultadoEsperado = "[\n" +
+                "    {\n" +
+                "        \"id\": 1,\n" +
+                "        \"dataHora\": \"2023-11-25T13:12:23.651+00:00\",\n" +
+                "        \"conta\": {\n" +
+                "            \"id\": 2,\n" +
+                "            \"agencia\": 1,\n" +
+                "            \"digito\": 1,\n" +
+                "            \"saldo\": 619.45,\n" +
+                "            \"titular\": \"Ada 2\",\n" +
+                "            \"cpf\": \"11122233344466\",\n" +
+                "            \"tipoConta\": \"POUPANCA\"\n" +
+                "        },\n" +
+                "        \"contaDestino\": null,\n" +
+                "        \"valor\": 200.00,\n" +
+                "        \"tipoTransacao\": \"SAQUE\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 2,\n" +
+                "        \"dataHora\": \"2023-11-26T09:12:13.894+00:00\",\n" +
+                "        \"conta\": {\n" +
+                "            \"id\": 2,\n" +
+                "            \"agencia\": 1,\n" +
+                "            \"digito\": 1,\n" +
+                "            \"saldo\": 619.45,\n" +
+                "            \"titular\": \"Ada 2\",\n" +
+                "            \"cpf\": \"11122233344466\",\n" +
+                "            \"tipoConta\": \"POUPANCA\"\n" +
+                "        },\n" +
+                "        \"contaDestino\": null,\n" +
+                "        \"valor\": 1320.00,\n" +
+                "        \"tipoTransacao\": \"DEPOSITO\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 3,\n" +
+                "        \"dataHora\": \"2023-11-26T09:12:28.911+00:00\",\n" +
+                "        \"conta\": {\n" +
+                "            \"id\": 2,\n" +
+                "            \"agencia\": 1,\n" +
+                "            \"digito\": 1,\n" +
+                "            \"saldo\": 619.45,\n" +
+                "            \"titular\": \"Ada 2\",\n" +
+                "            \"cpf\": \"11122233344466\",\n" +
+                "            \"tipoConta\": \"POUPANCA\"\n" +
+                "        },\n" +
+                "        \"contaDestino\": {\n" +
+                "            \"id\": 6,\n" +
+                "            \"agencia\": 2,\n" +
+                "            \"digito\": 1,\n" +
+                "            \"saldo\": 0.55,\n" +
+                "            \"titular\": \"Lovelace 2\",\n" +
+                "            \"cpf\": \"11122233344400\",\n" +
+                "            \"tipoConta\": \"POUPANCA\"\n" +
+                "        },\n" +
+                "        \"valor\": 1000.55,\n" +
+                "        \"tipoTransacao\": \"TRANSFERENCIA\"\n" +
+                "    }\n" +
+                "]";
+
+
+        // when
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .get("/bank-api/v1/contas/extrato")
+                        .queryParam("agencia", "1")
+                        .queryParam("digito", "1")
+                        .queryParam("conta", "2")
+                )
+                .andExpectAll(
+                        MockMvcResultMatchers.status().isOk(),
+                        MockMvcResultMatchers.content().json(resultadoEsperado)
+                );
+
     }
 }
