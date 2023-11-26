@@ -24,7 +24,7 @@ public class MostrarExtratoConta {
                 conta.getAgencia(), conta.getDigito(), conta.getId());
 
         if(contaBuscada == null) {
-            throw new Exception("Conta inexistente para mostrar o extrato.");
+            throw new Exception("Não é possível mostrar o extrato de uma conta inexistente.");
         }
 
         return this.transacaoGateway.buscaPorConta(contaBuscada);

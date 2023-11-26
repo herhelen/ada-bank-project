@@ -193,6 +193,20 @@ public class ContaControllerTest {
                         MockMvcResultMatchers.status().isOk(),
                         MockMvcResultMatchers.content().json(resultadoEsperado)
                 );
+    }
 
+    @Test
+    public void mostrarExtratoConta_ContaInexistente_DeveRetornarStatus400() throws Exception {
+
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .get("/bank-api/v1/contas/extrato")
+                        .queryParam("agencia", "1")
+                        .queryParam("digito", "1")
+                        .queryParam("conta", "666")
+                )
+                .andExpectAll(
+                        MockMvcResultMatchers.status().isBadRequest(),
+                        MockMvcResultMatchers.status().reason("Não é possível mostrar o extrato de uma conta inexistente.")
+                );
     }
 }
