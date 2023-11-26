@@ -45,7 +45,7 @@ Implementei no total de **32** testes, sendo **20** testes unitários e **12** t
 ### Coverage
 ![coverage](ada-bank-project-coverage.png)
 
-[Link](htmlReport/index.html) para relatório de coverage gerado pelo Intellij.
+[Link](coverageReport/index.md) para relatório de coverage gerado pelo Intellij.
 
 ### Possíveis melhorias
 - Criar classes de constantes de `String` para centralizar os textos das mensagens e os caminhos dos `endpoints`
