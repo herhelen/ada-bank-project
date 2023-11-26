@@ -36,6 +36,10 @@ public class RealizarTransferencia {
             throw new Exception("Conta(s) inexistente(s) para realizar a transferência.");
         }
 
+        if (contaOrigem.equals(contaDestino)) {
+            throw new Exception("Não é possível realizar a transferência com a conta origem igual a conta destino!");
+        }
+
         if (transacao.getValor().compareTo(BigDecimal.ZERO) <= 0) {
             throw new Exception("O valor da transferência deve ser maior que nulo.");
         }

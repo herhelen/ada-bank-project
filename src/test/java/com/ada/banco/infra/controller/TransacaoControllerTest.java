@@ -179,4 +179,23 @@ public class TransacaoControllerTest {
         );
     }
 
+    @Test
+    public void transferir_ParaMesmaConta_DeveRetornarStatus400() throws Exception {
+        // given
+        Conta lovelaceUmConta = new Conta(5L, 1L, 1L);
+        String requestTransferencia = this.objectMapper.writeValueAsString(
+                new Transacao(lovelaceUmConta, lovelaceUmConta, BigDecimal.valueOf(5.0), TipoTransacaoEnum.TRANSFERENCIA));
+
+        // when then
+        this.mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .post("/bank-api/v1/transacao/transferir")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestTransferencia))
+                .andExpectAll(
+                        MockMvcResultMatchers.status().isBadRequest(),
+                        MockMvcResultMatchers.status().reason("Não é possível realizar a transferência com " +
+                                "a conta origem igual a conta destino!")
+                );
+    }
 }
