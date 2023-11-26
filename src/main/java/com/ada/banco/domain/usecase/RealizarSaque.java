@@ -4,11 +4,13 @@ import com.ada.banco.domain.gateway.ContaGateway;
 import com.ada.banco.domain.gateway.TransacaoGateway;
 import com.ada.banco.domain.model.Conta;
 import com.ada.banco.domain.model.Transacao;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Date;
 
+@Service
 public class RealizarSaque {
 
     private ContaGateway contaGateway;
