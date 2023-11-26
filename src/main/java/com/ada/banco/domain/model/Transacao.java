@@ -17,10 +17,10 @@ public class Transacao {
     @Column(nullable = false)
     private Date dataHora;
 
-    @OneToOne
+    @ManyToOne
     private Conta conta;
 
-    @OneToOne
+    @ManyToOne
     private Conta contaDestino;
 
     @Column(nullable = false)
