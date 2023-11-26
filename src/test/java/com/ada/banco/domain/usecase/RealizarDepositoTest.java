@@ -57,7 +57,7 @@ public class RealizarDepositoTest {
                 () -> Assertions.assertEquals(this.contaTeste, novaTransacao.getConta()),
                 () -> Assertions.assertEquals(valorDeposito, novaTransacao.getValor()),
                 () -> Assertions.assertEquals(0,
-                        novaTransacao.getConta().getSaldo().compareTo(BigDecimal.valueOf(351.0)))
+                        BigDecimal.valueOf(351.0).compareTo(novaTransacao.getConta().getSaldo()))
         );
 
         verify(this.contaGateway, times(1)).buscarPorAgenciaDigitoEConta(

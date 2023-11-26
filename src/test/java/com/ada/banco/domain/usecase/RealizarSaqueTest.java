@@ -58,7 +58,7 @@ public class RealizarSaqueTest {
                 () -> Assertions.assertEquals(this.contaTeste, novaTransacao.getConta()),
                 () -> Assertions.assertEquals(valorSaque, novaTransacao.getValor()),
                 () -> Assertions.assertEquals(0,
-                        novaTransacao.getConta().getSaldo().compareTo(BigDecimal.ZERO))
+                        BigDecimal.ZERO.compareTo(novaTransacao.getConta().getSaldo()))
         );
 
         verify(this.contaGateway, times(1)).buscarPorAgenciaDigitoEConta(

@@ -66,9 +66,9 @@ public class RealizarTransferenciaTest {
                 () -> Assertions.assertEquals(this.contaDestinoTeste, novaTransacao.getContaDestino()),
                 () -> Assertions.assertEquals(valorTransferencia, novaTransacao.getValor()),
                 () -> Assertions.assertEquals(0,
-                        novaTransacao.getConta().getSaldo().compareTo(BigDecimal.valueOf(1200.05))),
+                        BigDecimal.valueOf(1200.05).compareTo(novaTransacao.getConta().getSaldo())),
                 () -> Assertions.assertEquals(0,
-                        novaTransacao.getContaDestino().getSaldo().compareTo(valorTransferencia))
+                        valorTransferencia.compareTo(novaTransacao.getContaDestino().getSaldo()))
         );
 
         verify(this.contaGateway, times(1)).buscarPorAgenciaDigitoEConta(
