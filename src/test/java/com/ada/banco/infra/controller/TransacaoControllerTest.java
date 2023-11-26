@@ -74,4 +74,28 @@ public class TransacaoControllerTest {
         );
     }
 
+    @Test
+    @SqlGroup({
+            @Sql(scripts="../../scripts/insert_contas.sql",
+                    executionPhase=Sql.ExecutionPhase.BEFORE_TEST_METHOD),
+            @Sql(scripts="../../scripts/truncate_tables_cleanup.sql",
+                    executionPhase=Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    })
+    public void depositar_ContaInexistente_DeveRetornarStatus400() throws Exception {
+        // given
+        Conta turingConta = new Conta(7L, 888L, 1L);
+        String requestDeposito = this.objectMapper.writeValueAsString(
+                new Transacao(turingConta, BigDecimal.valueOf(8.09), TipoTransacaoEnum.DEPOSITO));
+
+        // when then
+        this.mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .post("/bank-api/v1/transacao/depositar")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestDeposito))
+                .andExpectAll(
+                        MockMvcResultMatchers.status().isBadRequest(),
+                        MockMvcResultMatchers.status().reason("Conta inexistente para realizar o depósito.")
+                );
+    }
 }
