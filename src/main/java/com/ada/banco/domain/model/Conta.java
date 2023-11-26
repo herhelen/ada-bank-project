@@ -54,6 +54,12 @@ public class Conta {
         this.tipoConta = tipoConta;
     }
 
+    public Conta(Long id, Long agencia, Long digito) {
+        this.id = id;
+        this.agencia = agencia;
+        this.digito = digito;
+    }
+
     public Long getId() {
         return id;
     }
