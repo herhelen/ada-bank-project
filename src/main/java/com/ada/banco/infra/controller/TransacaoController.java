@@ -67,4 +67,24 @@ public class TransacaoController {
         }
     }
 
+    @PostMapping("/transferir")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<GenericResponse> transferir(@RequestBody Transacao transacao) {
+        try {
+            Transacao trasferencia = this.realizarTransferencia.execute(transacao);
+
+            if (trasferencia != null) {
+                GenericResponse response = new GenericResponse();
+                response.setStatus(HttpStatus.OK.value());
+                response.setData(trasferencia);
+                response.setMessage("Transferência realizada com sucesso!");
+
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        } catch (Exception exception) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());
+        }
+    }
 }

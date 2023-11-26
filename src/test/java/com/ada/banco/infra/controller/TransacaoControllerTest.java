@@ -144,4 +144,39 @@ public class TransacaoControllerTest {
                         MockMvcResultMatchers.status().reason("A conta não possui saldo suficiente para realizar o saque.")
                 );
     }
+
+    @Test
+    public void transferir_ComSucesso_DeveRetornarStatus200() throws Exception {
+        // given
+        Conta turingUmConta = new Conta(8L, 2L, 1L);
+        Conta turingDoisConta = new Conta(9L, 2L, 1L);
+        String requestTransferencia = this.objectMapper.writeValueAsString(
+                new Transacao(turingUmConta, turingDoisConta, BigDecimal.valueOf(45.50), TipoTransacaoEnum.TRANSFERENCIA));
+
+        // when
+        this.mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .post("/bank-api/v1/transacao/transferir")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestTransferencia))
+                .andExpectAll(
+                        MockMvcResultMatchers.status().isOk(),
+                        MockMvcResultMatchers.jsonPath("$.message",
+                                is("Transferência realizada com sucesso!"))
+                );
+
+        // then
+        List<Transacao> transacoes = this.transacaoRepository.findAllByConta(turingUmConta);
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(1, transacoes.size()),
+                () -> Assertions.assertEquals(0,
+                        BigDecimal.valueOf(45.50).compareTo(transacoes.get(0).getValor())),
+                () -> Assertions.assertEquals(TipoTransacaoEnum.TRANSFERENCIA, transacoes.get(0).getTipoTransacao()),
+                () -> Assertions.assertEquals(8L, transacoes.get(0).getConta().getId()),
+                () -> Assertions.assertEquals("Turing 1", transacoes.get(0).getConta().getTitular()),
+                () -> Assertions.assertEquals(0,
+                        BigDecimal.valueOf(54.50).compareTo(transacoes.get(0).getConta().getSaldo()))
+        );
+    }
+
 }
